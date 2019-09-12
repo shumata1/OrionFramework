@@ -1,0 +1,86 @@
+unit Orion.DAO.Rollback.Insert;
+
+interface
+
+uses
+  Orion.Interfaces,
+  System.Generics.Collections;
+type
+  TOrionDAORollbackInsert<T : class, constructor> = class(TInterfacedObject, iOrionDAORollBack<T>)
+  private
+    [weak]
+    FParent : iOrionDAO<T>;
+
+    FOldStateEntity : T;
+    FOldStateEntityList : TObjectList<T>;
+
+    FActualStateEntity : T;
+    FActualStateEntityList : TObjectList<T>;
+  public
+    constructor Create(aParent : iOrionDAO<T>);
+    destructor Destroy; override;
+    class function New(aParent : iOrionDAO<T>) :iOrionDAORollBack<T>;
+
+    function BeforeState(aValue : T) : iOrionDAORollBack<T>; overload;
+    function BeforeState(aValue : TObjectList<T>) : iOrionDAORollBack<T>; overload;
+    function ActualState(aValue : T) : iOrionDAORollBack<T>; overload;
+    function ActualState(aValue : TObjectList<T>) : iOrionDAORollBack<T>; overload;
+    function RollBack : iOrionDAORollBack<T>;
+  end;
+implementation
+
+{ TOrionDAORollbackInsert<T> }
+
+function TOrionDAORollbackInsert<T>.ActualState(aValue: T): iOrionDAORollBack<T>;
+begin
+
+end;
+
+function TOrionDAORollbackInsert<T>.ActualState(aValue: TObjectList<T>): iOrionDAORollBack<T>;
+begin
+  Result := Self;
+  FActualStateEntityList := aValue;
+end;
+
+function TOrionDAORollbackInsert<T>.BeforeState(aValue: T): iOrionDAORollBack<T>;
+begin
+
+end;
+
+function TOrionDAORollbackInsert<T>.BeforeState(aValue: TObjectList<T>): iOrionDAORollBack<T>;
+begin
+
+end;
+
+constructor TOrionDAORollbackInsert<T>.Create(aParent : iOrionDAO<T>);
+begin
+  FParent := aParent;
+end;
+
+destructor TOrionDAORollbackInsert<T>.Destroy;
+begin
+  if Assigned(FOldStateEntity) then
+    FOldStateEntity.DisposeOf;
+
+  if Assigned(FOldStateEntityList) then
+    FOldStateEntityList.DisposeOf;
+
+  if Assigned(FActualStateEntity) then
+    FActualStateEntity.DisposeOf;
+
+  if Assigned(FActualStateEntityList) then
+    FActualStateEntityList.DisposeOf;
+  inherited;
+end;
+
+class function TOrionDAORollbackInsert<T>.New(aParent : iOrionDAO<T>): iOrionDAORollBack<T>;
+begin
+  Result := Self.Create(aParent);
+end;
+
+function TOrionDAORollbackInsert<T>.RollBack: iOrionDAORollBack<T>;
+begin
+
+end;
+
+end.

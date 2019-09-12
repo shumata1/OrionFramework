@@ -1,0 +1,28 @@
+unit Orion.Data.Factory.DBX;
+
+interface
+
+type
+  TOrionDataFactoryDBX = class
+  private
+
+  public
+    constructor Create;
+    destructor Destroy; override;
+  end;
+implementation
+
+{ TOrionDataFactoryDBX }
+
+constructor TOrionDataFactoryDBX.Create;
+begin
+
+end;
+
+destructor TOrionDataFactoryDBX.Destroy;
+begin
+
+  inherited;
+end;
+
+end.

@@ -1,0 +1,50 @@
+package OrionFireDAC;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  bindengine,
+  bindcomp,
+  vclFireDAC,
+  FireDAC,
+  FireDACCommonDriver,
+  FireDACCommon,
+  FireDACIBDriver,
+  RESTComponents;
+
+contains
+  Orion.Data.Interfaces in 'CORE\Data\Orion.Data.Interfaces.pas',
+  Orion.Data.Conexoes.FireDAC in 'FireDAC Connectors\Orion.Data.Conexoes.FireDAC.pas',
+  Orion.Data.DataSets.FireDAC.MemTable in 'FireDAC Connectors\Orion.Data.DataSets.FireDAC.MemTable.pas',
+  Orion.Data.DataSets.FireDAC.Query in 'FireDAC Connectors\Orion.Data.DataSets.FireDAC.Query.pas',
+  Orion.Data.Factory.FireDAC in 'FireDAC Connectors\Orion.Data.Factory.FireDAC.pas';
+
+end.

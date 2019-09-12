@@ -1,0 +1,163 @@
+unit Orion.Data.Conexoes.FireDAC;
+
+interface
+
+uses
+  Orion.Data.Interfaces,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.Stan.Param,
+  FireDAC.DatS,
+  FireDAC.DApt.Intf,
+  FireDAC.DApt,
+  FireDAC.Phys.FBDef,
+  FireDAC.VCLUI.Wait,
+  FireDAC.Comp.UI,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB,
+  Data.DB,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TOrionConexaoFireDAC = class(TInterfacedObject, iConexao, iConexaoParametros)
+  private
+    FConexao :TFDConnection;
+
+    FCaminhoBanco :string;
+    FUserName :string;
+    FSenha :string;
+    FPorta :integer;
+    FServer :string;
+    FTipoBanco :TTipoBanco;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New :iConexao;
+
+    function Parametros :iConexaoParametros;
+    function Conexao :iConexao;
+    function Conectar :iConexao;
+    function GetConnection :TComponent;
+
+    function CarregarArquivo(aFileName : string) : iConexaoParametros;
+    function CaminhoBanco(aValue :string) :iConexaoParametros;
+    function UserName(aValue :string) :iConexaoParametros;
+    function Senha(aValue :string) :iConexaoParametros;
+    function Porta(aValue :integer) :iConexaoParametros;
+    function Server(aValue :string) :iConexaoParametros;
+    function TipoBanco(aValue :TTipoBanco) :iConexaoParametros;
+    function &EndParametros:iConexao;
+  end;
+implementation
+
+uses
+  System.SysUtils;
+
+{ TOrionConexaoFireDAC }
+
+function TOrionConexaoFireDAC.CaminhoBanco(aValue: string): iConexaoParametros;
+begin
+  Result := Self;
+  FCaminhoBanco := aValue;
+end;
+
+function TOrionConexaoFireDAC.GetConnection: TComponent;
+begin
+  Result := FConexao;
+end;
+
+function TOrionConexaoFireDAC.CarregarArquivo(
+  aFileName: string): iConexaoParametros;
+begin
+
+end;
+
+function TOrionConexaoFireDAC.Conectar: iConexao;
+begin
+  Result := Self;
+  FConexao.DriverName      := 'FB';
+  FConexao.Params.Database := FCaminhoBanco;
+  FConexao.Params.UserName := FUserName;
+  FConexao.Params.Password := FSenha;
+
+  case FTipoBanco of
+    tpFirebird30: FConexao.Params.DriverID := 'FB';
+    tpFirebird25: FConexao.Params.DriverID := 'FB';
+  end;
+  FConexao.Connected := True;
+end;
+
+function TOrionConexaoFireDAC.Conexao: iConexao;
+begin
+  Result := Self;
+end;
+
+constructor TOrionConexaoFireDAC.Create;
+begin
+  FConexao := TFDConnection.Create(nil);
+end;
+
+destructor TOrionConexaoFireDAC.Destroy;
+begin
+  FConexao.Connected := False;
+  FConexao.ResourceOptions.KeepConnection := False;
+
+  FreeAndNil(FConexao);
+  inherited;
+end;
+
+function TOrionConexaoFireDAC.EndParametros: iConexao;
+begin
+  Result := Self;
+end;
+
+class function TOrionConexaoFireDAC.New: iConexao;
+begin
+  Result := Self.Create;
+end;
+
+function TOrionConexaoFireDAC.Parametros: iConexaoParametros;
+begin
+  Result := Self;
+end;
+
+function TOrionConexaoFireDAC.Porta(aValue: integer): iConexaoParametros;
+begin
+  Result := Self;
+  FPorta := aValue;
+end;
+
+function TOrionConexaoFireDAC.Senha(aValue: string): iConexaoParametros;
+begin
+  Result := Self;
+  FSenha := aValue;
+end;
+
+function TOrionConexaoFireDAC.Server(aValue: string): iConexaoParametros;
+begin
+  Result := Self;
+  FServer := aValue;
+end;
+
+function TOrionConexaoFireDAC.TipoBanco(aValue: TTipoBanco): iConexaoParametros;
+begin
+  Result := Self;
+  FTipoBanco := aValue;
+end;
+
+function TOrionConexaoFireDAC.UserName(aValue: string): iConexaoParametros;
+begin
+  Result := Self;
+  FUserName := aValue;
+end;
+
+end.

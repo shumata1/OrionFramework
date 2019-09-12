@@ -1,0 +1,60 @@
+package OrionCORE;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  IndySystem,
+  IndyProtocols,
+  IndyCore,
+  bindengine,
+  bindcomp,
+  RESTComponents;
+
+contains
+  Orion.Attributes in 'CORE\Orion.Attributes.pas',
+  Orion.Data.Rtti in 'CORE\Data\Orion.Data.Rtti.pas',
+  Orion.Interfaces in 'CORE\Orion.Interfaces.pas',
+  Orion.NormalRtti in 'CORE\Orion.NormalRtti.pas',
+  Orion.RestHttpClient in 'CORE\Rest\Orion.RestHttpClient.pas',
+  Orion.RestUri in 'CORE\Rest\Orion.RestUri.pas',
+  Orion.Rtti in 'CORE\Orion.Rtti.pas',
+  Orion.SQL in 'CORE\Orion.SQL.pas',
+  Orion.Data.Interfaces in 'CORE\Data\Orion.Data.Interfaces.pas',
+  Orion.Wrapper.JSON in 'CORE\Orion.Wrapper.JSON.pas',
+  Orion.Utils in 'CORE\Orion.Utils.pas',
+  Orion.Manager.Client in 'CORE\Orion.Manager.Client.pas',
+  Orion.DAO.Client in 'CORE\DAO\Orion.DAO.Client.pas',
+  Orion.DAO.Server_v20 in 'CORE\DAO\Orion.DAO.Server_v20.pas',
+  Orion.DAO.Wrapper in 'CORE\DAO\Orion.DAO.Wrapper.pas',
+  Orion.DAO.Rollback.Insert in 'CORE\DAO\RollBack\Orion.DAO.Rollback.Insert.pas',
+  Orion.DAO.Rollback.Update in 'CORE\DAO\RollBack\Orion.DAO.Rollback.Update.pas';
+
+end.

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/08/11 00:44:00.000.673,=rtl.dcp</Transaction>
+    <Transaction>2019/08/11 00:44:42.000.095,=D:\Projetos\Orion Framework\Orion.Data.DataSets.FireDAC.Query.pas</Transaction>
+    <Transaction>2019/08/11 00:44:42.000.082,=D:\Projetos\Orion Framework\Orion.Data.Conexoes.FireDAC.pas</Transaction>
+    <Transaction>2019/08/11 00:44:42.000.089,=D:\Projetos\Orion Framework\Orion.Data.DataSets.FireDAC.MemTable.pas</Transaction>
+    <Transaction>2019/08/11 00:44:42.000.101,=D:\Projetos\Orion Framework\Orion.Data.Factory.FireDAC.pas</Transaction>
+    <Transaction>2019/08/11 00:45:51.000.177,=D:\Projetos\Orion Framework\Orion.Data.Interfaces.pas</Transaction>
+    <Transaction>2019/08/11 00:46:02.000.972,=bindcomp.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:02.000.998,=FireDACCommonDriver.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:02.000.946,=vcl.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:02.000.954,=dbrtl.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:02.000.990,=FireDAC.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:02.000.963,=bindengine.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:02.000.981,=vclFireDAC.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:03.000.016,=FireDACIBDriver.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:03.000.007,=FireDACCommon.dcp</Transaction>
+    <Transaction>2019/08/11 00:46:34.000.994,C:\Users\Ricardo\Documents\Embarcadero\Studio\Projects\Package1.dproj=D:\Projetos\Orion Framework\OrionFireDAC.dproj</Transaction>
+    <Transaction>2019/09/12 13:41:04.000.156,D:\Projetos\Orion Framework\Orion.Data.Interfaces.pas=D:\Projetos\Orion Framework\CORE\Data\Orion.Data.Interfaces.pas</Transaction>
+    <Transaction>2019/09/12 14:16:00.000.639,=C:\Users\vg-02\Documents\OrionFramework\FireDAC Connectors\Orion.Data.Conexoes.FireDAC.pas</Transaction>
+    <Transaction>2019/09/12 14:16:04.000.904,=C:\Users\vg-02\Documents\OrionFramework\FireDAC Connectors\Orion.Data.Factory.FireDAC.pas</Transaction>
+    <Transaction>2019/09/12 14:16:04.000.883,=C:\Users\vg-02\Documents\OrionFramework\FireDAC Connectors\Orion.Data.DataSets.FireDAC.Query.pas</Transaction>
+    <Transaction>2019/09/12 14:16:04.000.856,=C:\Users\vg-02\Documents\OrionFramework\FireDAC Connectors\Orion.Data.DataSets.FireDAC.MemTable.pas</Transaction>
+    <Transaction>2019/09/12 14:16:58.000.924,=RESTComponents.dcp</Transaction>
+  </Transactions>
+</BorlandProject>

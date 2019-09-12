@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2019/09/12 14:30:05.826,=rtl.dcp</Transaction>
+    <Transaction>2019/09/12 14:30:42.593,C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\OrionDBX.dproj=C:\Users\vg-02\Documents\Embarcadero\Studio\Projects\Package1.dproj</Transaction>
+    <Transaction>2019/09/12 14:31:48.539,=C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Unit1.pas</Transaction>
+    <Transaction>2019/09/12 14:32:24.882,C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Orion.Data.Conexoes.DBX.pas=C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Unit1.pas</Transaction>
+    <Transaction>2019/09/12 15:02:31.066,=DbxCommonDriver.dcp</Transaction>
+    <Transaction>2019/09/12 15:02:31.081,=dbrtl.dcp</Transaction>
+    <Transaction>2019/09/12 15:02:31.089,=dbexpress.dcp</Transaction>
+    <Transaction>2019/09/12 15:02:31.096,=OrionCORE.dcp</Transaction>
+    <Transaction>2019/09/12 15:27:47.837,=DBXMSSQLDriver.dcp</Transaction>
+    <Transaction>2019/09/12 15:50:37.222,=C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Unit2.pas</Transaction>
+    <Transaction>2019/09/12 15:50:51.294,C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Orion.Data.DataSets.DBX.pas=C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Unit2.pas</Transaction>
+    <Transaction>2019/09/12 16:11:05.304,=dsnap.dcp</Transaction>
+    <Transaction>2019/09/12 16:11:05.317,=dbxcds.dcp</Transaction>
+    <Transaction>2019/09/12 16:55:09.876,=C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Unit2.pas</Transaction>
+    <Transaction>2019/09/12 16:56:33.136,C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Orion.Data.Factory.DBX.pas=C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Unit2.pas</Transaction>
+    <Transaction>2019/09/12 16:58:19.672,C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Orion.Data.DataSets.DBX.SimpleDataSet.pas=C:\Users\vg-02\Documents\OrionFramework\DBX Connectors\Orion.Data.DataSets.DBX.pas</Transaction>
+  </Transactions>
+</BorlandProject>

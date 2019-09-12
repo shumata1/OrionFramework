@@ -1,0 +1,320 @@
+unit Orion.Data.DataSets.DBX;
+
+
+interface
+
+uses
+  Orion.Data.Interfaces,
+  Data.DB,
+  DataSnap.DBClient,
+  Data.SqlExpr,
+  SimpleDS,
+  System.Classes,
+  System.JSON;
+
+type
+  TOrionDataSetDBXSimpleDataSet = class(TInterfacedObject, iDataSet)
+  private
+    [weak]
+    FConexao :iConexao;
+    FDataSet :TSimpleDataSet;
+    procedure InternalSearchMode(aValue :boolean);
+  public
+    constructor Create(aConexao :iConexao);
+    destructor Destroy; override;
+    class function New(aConexao :iConexao) :iDataSet;
+
+    function SQL(aValue :string) :iDataSet;
+    function CreateDataSet : iDataSet;
+    function Name(aValue :string) : IDataSet; overload;
+    function Name :string; overload;
+    function Assign(aValue :TPersistent):iDataSet;
+    function Fields :TFields;
+    function FieldDefs :TFieldDefs;
+    function ExecSQL :iDataSet;
+    function Append :iDataSet;
+    function Insert :iDataSet;
+    function Edit :iDataSet;
+    function Post :iDataSet;
+    function Cancel :iDataSet;
+    function Delete :iDataSet;
+    function First :iDataSet;
+    function Next :iDataSet;
+    function Last :iDataSet;
+    function Prior :iDataSet;
+    function RecordCount :integer;
+    function DataSource(aValue :TDataSource) :iDataSet;
+    function AsJSONObject :TJSONObject;
+    function AsJSONArray :TJSONArray;
+    function Filter(aValue :string) : iDataSet;
+    function Filtered(aValue :boolean) : iDataSet;
+    function DataSet : TDataSet;
+    function DisableControls : iDataSet;
+    function EnableControls : iDataSet;
+    function EmptyDataSet : iDataSet;
+
+    function Eof :Boolean;
+    function Bof :Boolean;
+
+    function ApplyUpdates(aMaxErrors :integer) :integer;
+    function Close :iDataSet;
+    function Open :iDataSet;
+    function EmptyOpen :iDataSet;
+    function SearchMode(aValue :Boolean) :iDataSet;
+    function Locate(const aKeyFields: string; const aKeyValues: Variant; aOptions: TLocateOptions): Boolean;
+    function Recno :integer;
+  end;
+implementation
+
+uses
+  System.SysUtils;
+
+{ TOrionDataSetDBXSimpleDataSet }
+
+function TOrionDataSetDBXSimpleDataSet.Append: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Append;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.ApplyUpdates(aMaxErrors: integer): integer;
+begin
+  try
+    Result := FDataSet.ApplyUpdates(aMaxErrors);
+    TSQLConnection(FConexao.GetConnection).Commit;
+
+  except on E: Exception do
+    begin
+      TSQLConnection(FConexao.GetConnection).Rollback;
+      raise Exception.Create('Falha na gravação dos dados no banco de dados.');
+    end;
+  end;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.AsJSONArray: TJSONArray;
+begin
+//  Result := TConverter.New.DataSet(FDataset).AsJSONArray;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.AsJSONObject: TJSONObject;
+begin
+//  Result := TConverter.New.DataSet(FDataset).AsJSONObject;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Assign(aValue: TPersistent): iDataSet;
+begin
+  Result := Self;
+  FDataset.Assign(aValue);
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Bof: Boolean;
+begin
+
+  Result := FDataSet.Bof;
+
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Cancel: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Cancel;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Close: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Close;
+end;
+
+constructor TOrionDataSetDBXSimpleDataSet.Create(aConexao :iConexao);
+begin
+  FConexao := aConexao;
+  FDataSet := TSimpleDataSet.Create(nil);
+
+  FDataSet.Connection := TSQLConnection(FConexao.GetConnection);
+end;
+
+function TOrionDataSetDBXSimpleDataSet.CreateDataSet: iDataSet;
+begin
+  Result := Self;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.DataSet: TDataSet;
+begin
+  Result := FDataSet;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.DataSource(aValue: TDataSource): iDataSet;
+begin
+  Result := Self;
+  aValue.DataSet := FDataSet;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Delete: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Delete;
+end;
+
+destructor TOrionDataSetDBXSimpleDataSet.Destroy;
+begin
+  FreeAndNil(FDataSet);
+  inherited;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.DisableControls: iDataSet;
+begin
+  Result := Self;
+  FDataSet.DisableControls;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Edit: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Edit;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.EmptyDataSet: iDataSet;
+begin
+  Result := Self;
+  FDataset.EmptyDataSet;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.EmptyOpen: iDataSet;
+begin
+  if not FDataSet.DataSet.CommandText.IsEmpty then
+  begin
+    FDataSet.DataSet.CommandText := FDataSet.DataSet.CommandText + ' where 1 = 2';
+    FDataSet.Open;
+  end;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.EnableControls: iDataSet;
+begin
+  Result := Self;
+  FDataSet.EnableControls;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Eof: Boolean;
+begin
+  Result := FDataSet.Eof;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.ExecSQL: iDataSet;
+begin
+  Result := Self;
+  raise Exception.Create('Comando ExecSQL não pertimido.');
+end;
+
+function TOrionDataSetDBXSimpleDataSet.FieldDefs: TFieldDefs;
+begin
+  Result := FDataSet.FieldDefs;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Fields: TFields;
+begin
+  Result := FDataSet.Fields;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Filter(aValue: string): iDataSet;
+begin
+  Result := Self;
+  FDataset.Filter := aValue;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Filtered(aValue: boolean): iDataSet;
+begin
+  Result := Self;
+  FDataset.Filtered := aValue;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.First: iDataSet;
+begin
+  Result := Self;
+  FDataSet.First;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Insert: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Insert;
+end;
+
+procedure TOrionDataSetDBXSimpleDataSet.InternalSearchMode(aValue: boolean);
+begin
+
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Last: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Last;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Locate(const aKeyFields: string; const aKeyValues: Variant; aOptions: TLocateOptions): Boolean;
+begin
+  Result := FDataSet.Locate(aKeyFields, aKeyValues, aOptions);
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Name: string;
+begin
+  Result := FDataset.Name;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Name(aValue: string): IDataSet;
+begin
+  Result := Self;
+  FDataset.Name := aValue;
+end;
+
+class function TOrionDataSetDBXSimpleDataSet.New(aConexao :iConexao) : iDataSet;
+begin
+  Result := Self.Create(aConexao);
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Next: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Next;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Open: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Open;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Post: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Post;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Prior: iDataSet;
+begin
+  Result := Self;
+  FDataSet.Prior;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.Recno: integer;
+begin
+  Result := FDataSet.RecNo;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.RecordCount: integer;
+begin
+  Result := FDataSet.RecordCount;
+end;
+
+function TOrionDataSetDBXSimpleDataSet.SearchMode(aValue :Boolean) : iDataSet;
+begin
+  Result := Self;
+  InternalSearchMode(aValue);
+end;
+
+function TOrionDataSetDBXSimpleDataSet.SQL(aValue: string): iDataSet;
+begin
+  Result := Self;
+  FDataSet.DataSet.CommandText := aValue;
+end;
+

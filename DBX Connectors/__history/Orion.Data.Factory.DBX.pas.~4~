@@ -1,0 +1,33 @@
+unit Orion.Data.Factory.DBX;
+
+interface
+
+uses
+  Orion.Data.Interfaces;
+
+type
+  TOrionDataFactoryDBX = class
+  private
+
+  public
+    constructor Create;
+    destructor Destroy; override;
+    function Conexao : iConexao;
+    function DataSet : iDataSet;
+  end;
+implementation
+
+{ TOrionDataFactoryDBX }
+
+constructor TOrionDataFactoryDBX.Create;
+begin
+
+end;
+
+destructor TOrionDataFactoryDBX.Destroy;
+begin
+
+  inherited;
+end;
+
+end.

@@ -1,0 +1,219 @@
+unit Orion.DAO.Client;
+
+interface
+
+uses
+  Orion.Interfaces,
+  Data.DB,
+  System.JSON,
+  Rest.JSON,
+  Orion.Data.Interfaces,
+  System.Generics.Collections,
+  System.Generics.Defaults;
+
+type
+  TOrionDAOCLient<T:class, constructor> = class(TInterfacedObject, iOrionDAOCLient<T>, iOrionDAOClientSearchResult<T>)
+  private
+    FRestUri :iOrionRestUri;
+    FEntity : T;
+    FEntityOnListIndex :integer;
+    FJSONArray :TJSONArray;
+    FObjectList :TObjectList<T>;
+
+    function ExistOnList(aObject :T) :boolean;
+  public
+    constructor Create(aRestUri :iOrionRestUri);
+    destructor Destroy; override;
+    class function New(aRestUri :iOrionRestUri) :iOrionDAOCLient<T>; overload;
+    class function New : iOrionDAOCLient<T>; overload;
+
+    function DataSource(aValue :TDataSource) : iOrionDAOClient<T>;
+    function Entity :T;
+
+    function Search : iOrionDAOCLient<T>;
+    function Insert(aValue :T) : iOrionDAOClient<T>;
+    function Update(aValue :T) : iOrionDAOClient<T>;
+    function Delete(aValue :T) : iOrionDAOClient<T>;
+
+    function Communication : iOrionRestUri;
+
+    function Result : iOrionDAOClientSearchResult<T>;
+    function AsJSONArray :TJSONArray;
+    function ToJSON(aValue : TJSONValue) : iOrionDAOClient<T>;
+
+    {iOrionDAOClientSearchResult}
+    function AsObjectList : TObjectList<T>;
+  end;
+implementation
+
+uses
+  Orion.Data.Rtti,
+  Orion.Rtti,
+  System.SysUtils;
+
+{ TOrionDAOCLient<T> }
+
+function TOrionDAOCLient<T>.AsJSONArray: TJSONArray;
+begin
+  Result := FJSONArray;
+end;
+
+function TOrionDAOCLient<T>.AsObjectList: TObjectList<T>;
+begin
+  Result := FObjectList;
+end;
+
+function TOrionDAOCLient<T>.Communication: iOrionRestUri;
+begin
+  Result := FRestUri;
+end;
+
+constructor TOrionDAOCLient<T>.Create(aRestUri :iOrionRestUri);
+begin
+  FRestUri := aRestUri;
+  FEntity  := T.Create;
+  FObjectList := TObjectList<T>.Create;
+end;
+
+function TOrionDAOCLient<T>.DataSource(aValue: TDataSource): iOrionDAOClient<T>;
+begin
+  Result := Self;
+end;
+
+function TOrionDAOCLient<T>.Delete(aValue: T): iOrionDAOClient<T>;
+begin
+  Result := Self;
+  if ExistOnList(aValue) then
+    FObjectList.Delete(FEntityOnListIndex);
+
+  FObjectList.TrimExcess;
+end;
+
+destructor TOrionDAOCLient<T>.Destroy;
+var
+  I: Integer;
+begin
+  FEntity.DisposeOf;
+
+  if Assigned(FJSONArray) then
+    FJSONArray.DisposeOf;
+
+  FObjectList.DisposeOf;
+  inherited;
+end;
+
+function TOrionDAOCLient<T>.Entity: T;
+begin
+  Result := FEntity;
+end;
+
+function TOrionDAOCLient<T>.ExistOnList(aObject :T) :boolean;
+var
+  LCamposPK, LCamposPKNaLista :TDictionary<string,Variant>;
+  I: Integer;
+  LContadorPK :integer;
+  Key: string;
+begin
+  Result := False;
+  try
+    LCamposPK := TOrionDataRtti<T>.New(nil).GetPrimaryKeys(aObject);
+    for I := 0 to Pred(FObjectList.Count) do
+    begin
+      LContadorPK      := 0;
+      LCamposPKNaLista := nil;
+
+      if Assigned(LCamposPKNaLista) then
+        LCamposPKNaLista.Free;
+
+      LCamposPKNaLista := TOrionDataRtti<T>.New(nil).GetPrimaryKeys(FObjectList[i]);
+
+      for Key in LCamposPKNaLista.Keys do
+      begin
+        if LCamposPK[Key] = LCamposPKNaLista[Key] then
+          Inc(LContadorPK);
+      end;
+
+      if LContadorPK = LCamposPK.Count then
+      begin
+        FEntityOnListIndex := i;
+        Result := True;
+        Break;
+      end;
+    end;
+  finally
+    if Assigned(LCamposPKNaLista) then
+      LCamposPKNaLista.DisposeOf;
+
+    if Assigned(LCamposPK) then
+      LCamposPK.DisposeOf;
+  end;
+end;
+
+function TOrionDAOCLient<T>.Insert(aValue: T): iOrionDAOClient<T>;
+begin
+  Result := Self;
+
+  if not FObjectList.Contains(aValue) then
+    FObjectList.Add(aValue);
+
+  FObjectList.TrimExcess;
+end;
+
+class function TOrionDAOCLient<T>.New: iOrionDAOCLient<T>;
+begin
+  Result := Self.Create(nil);
+end;
+
+class function TOrionDAOCLient<T>.New(aRestUri :iOrionRestUri): iOrionDAOCLient<T>;
+begin
+  Result := Self.Create(aRestUri);
+end;
+
+function TOrionDAOCLient<T>.Result: iOrionDAOClientSearchResult<T>;
+begin
+  Result := Self;
+end;
+
+function TOrionDAOCLient<T>.Search: iOrionDAOCLient<T>;
+begin
+  FEntityOnListIndex := -1;
+  Result := Self;
+  FRestUri.Execute;
+
+  if Assigned(FJSONArray) then
+    FJSONArray.DisposeOf;
+
+  FJSONArray := TJSONArray(FRestUri.JSON);
+
+  FObjectList.Clear;
+  TOrionRtti<T>.New(nil).JSONArrayToObjectList(FJSONArray, FObjectList);
+  FObjectList.TrimExcess;
+end;
+
+function TOrionDAOCLient<T>.ToJSON(aValue: TJSONValue): iOrionDAOClient<T>;
+var
+  jv :TJSONValue;
+begin
+  if Assigned(FJSONArray) then
+    FJSONArray.DisposeOf;
+
+  FJSONArray := TJSONArray(aValue);
+
+  FObjectList.Clear;
+  TOrionRtti<T>.New(nil).JSONArrayToObjectList(FJSONArray, FObjectList);
+  FObjectList.TrimExcess;
+end;
+
+function TOrionDAOCLient<T>.Update(aValue: T): iOrionDAOClient<T>;
+begin
+  Result := Self;
+
+  if ExistOnList(aValue) then
+    TOrionRtti<T>.New(nil).ObjectToObject(aValue, FObjectList[FEntityOnListIndex])
+  else
+    FObjectList.Add(aValue);
+
+  FObjectList.TrimExcess;
+end;
+
+end.
